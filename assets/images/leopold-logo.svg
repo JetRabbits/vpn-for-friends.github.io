@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
+    <defs>
+        <!-- Matte Purple Gradient (Soft, no harsh shine) -->
+        <linearGradient id="matteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#9C27B0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7B1FA2;stop-opacity:1" />
+        </linearGradient>
+        <!-- Subtle Depth Shadow -->
+        <filter id="softDepth" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="1" result="blur"/>
+            <feOffset dx="0.5" dy="0.5" in="blur" result="offsetBlur"/>
+            <feMerge>
+                <feMergeNode in="offsetBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <!-- Soft Inner Shadow for the Knot -->
+        <filter id="knotSoft">
+            <feOffset dx="0" dy="0.5"/>
+            <feGaussianBlur stdDeviation="0.8" result="blur"/>
+            <feComposite operator="out" in="SourceGraphic" in2="blur" result="inverse"/>
+            <feFlood flood-color="black" flood-opacity="0.2" result="color"/>
+            <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+            <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+    </defs>
+    
+    <!-- Left Wing (More Triangular) -->
+    <path d="M45 25 L 10 10 Q 5 15, 5 30 Q 5 45, 10 50 L 45 35 Z" fill="url(#matteGradient)" filter="url(#softDepth)" />
+    
+    <!-- Right Wing (More Triangular) -->
+    <path d="M55 25 L 90 10 Q 95 15, 95 30 Q 95 45, 90 50 L 55 35 Z" fill="url(#matteGradient)" filter="url(#softDepth)" />
+    
+    <!-- Knot (Central part) -->
+    <rect x="43" y="22" width="14" height="16" rx="3" fill="#8E24AA" filter="url(#knotSoft)" />
+</svg>
