@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>galactic-connect</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+          Roboto, sans-serif;
+        background:
+          radial-gradient(1200px 500px at 50% -150px, rgba(0, 122, 255, 0.2), transparent),
+          linear-gradient(180deg, #f8f9fb 0%, #eef2f7 100%);
+        color: #111827;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 480px;
+        text-align: center;
+        padding: 44px 28px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        box-shadow:
+          0 24px 80px rgba(17, 24, 39, 0.08),
+          0 2px 8px rgba(17, 24, 39, 0.05);
+        backdrop-filter: blur(12px);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(32px, 6vw, 44px);
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+      }
+
+      p {
+        margin: 12px 0 28px;
+        font-size: 17px;
+        color: #4b5563;
+      }
+
+      .install-button {
+        display: inline-block;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: #fff;
+        background: linear-gradient(180deg, #0a84ff 0%, #0064e0 100%);
+        border-radius: 999px;
+        padding: 14px 28px;
+        box-shadow: 0 14px 28px rgba(0, 100, 224, 0.3);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .install-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 34px rgba(0, 100, 224, 0.35);
+      }
+
+      .install-button:active {
+        transform: translateY(0);
+      }
+
+      .meta {
+        margin-top: 20px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>galactic-connect</h1>
+      <p>iOS testing builds</p>
+      <a id="install-link" class="install-button" href="#">Install Galactic Connect</a>
+      <div id="build-version" class="meta">Version: loading…</div>
+    </main>
+
+    <script>
+      const manifestUrl = new URL('manifest.plist', window.location.href).href;
+      const installLink = document.getElementById('install-link');
+      installLink.href =
+        'itms-services://?action=download-manifest&url=' + encodeURIComponent(manifestUrl);
+
+      fetch('release.json', { cache: 'no-store' })
+        .then((response) => (response.ok ? response.json() : null))
+        .then((data) => {
+          if (!data?.bundleVersion) return;
+          document.getElementById('build-version').textContent = `Version: ${data.bundleVersion}`;
+        })
+        .catch(() => {
+          document.getElementById('build-version').textContent = 'Version: unavailable';
+        });
+    </script>
+  </body>
+</html>
